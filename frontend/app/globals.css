@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-crab-sand text-slate-800 antialiased min-h-screen font-sans lg:overflow-hidden;
+  }
+
+  ::selection {
+    @apply bg-crab-coral/20 text-crab-coral;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/95 backdrop-blur-3xl border border-slate-200/80 rounded-[2.5rem] relative overflow-hidden;
+    box-shadow: 0 32px 64px -12px rgba(14, 165, 233, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.06), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  .glass-input {
+    @apply bg-sky-50/70 border-2 border-sky-200/60 rounded-2xl focus:outline-none focus:border-crab-coral/50 focus:ring-4 focus:ring-crab-coral/10 transition-all duration-300 text-slate-700;
+  }
+
+  .btn-primary {
+    @apply bg-crab-coral hover:bg-[#ff6b6b] text-white font-black py-5 px-10 rounded-2xl transition-all duration-500 shadow-vibrant active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none uppercase tracking-widest text-[15px];
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-slate-50 text-slate-500 font-black py-5 px-10 rounded-2xl border border-slate-300 transition-all duration-500 active:scale-[0.96] shadow-sm uppercase tracking-widest text-[15px];
+  }
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
