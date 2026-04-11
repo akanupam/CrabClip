@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { HistoryItem } from '@/lib/useClipHistory'
+import { HistoryItem } from '../lib/useClipHistory'
 
 interface ClipHistoryProps {
   items: HistoryItem[]

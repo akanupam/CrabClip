@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { createPaste, checkHealth, retrieveContent } from '@/lib/api'
-import { useClipHistory } from '@/lib/useClipHistory'
-import PasteForm from '@/components/PasteForm'
-import RetrieveForm from '@/components/RetrieveForm'
-import OtpDisplay from '@/components/OtpDisplay'
-import ContentDisplay from '@/components/ContentDisplay'
-import ClipHistory from '@/components/ClipHistory'
-import AnimatedOcean from '@/components/AnimatedOcean'
-import MascotBubble from '@/components/MascotBubble'
+import { createPaste, checkHealth, retrieveContent } from '../lib/api'
+import { useClipHistory } from '../lib/useClipHistory'
+import PasteForm from '../components/PasteForm'
+import RetrieveForm from '../components/RetrieveForm'
+import OtpDisplay from '../components/OtpDisplay'
+import ContentDisplay from '../components/ContentDisplay'
+import ClipHistory from '../components/ClipHistory'
+import AnimatedOcean from '../components/AnimatedOcean'
+import MascotBubble from '../components/MascotBubble'
 
 export default function Home() {
   const clipHistory = useClipHistory()

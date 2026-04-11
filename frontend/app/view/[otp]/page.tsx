@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { retrieveContent } from '@/lib/api'
-import ContentDisplay from '@/components/ContentDisplay'
-import RetrieveForm from '@/components/RetrieveForm'
+import { retrieveContent } from '../../../lib/api'
+import ContentDisplay from '../../../components/ContentDisplay'
+import RetrieveForm from '../../../components/RetrieveForm'
 import Link from 'next/link'
 
 export default function ViewPage() {
