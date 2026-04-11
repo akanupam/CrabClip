@@ -11,6 +11,8 @@ export default function ViewPage() {
   const params = useParams()
   const otp = params.otp as string
   const [content, setContent] = useState<string | null>(null)
+  const [contentType, setContentType] = useState<string>('text/plain')
+  const [encoding, setEncoding] = useState<string>('utf-8')
   const [loading, setLoading] = useState(!!otp)
   const [error, setError] = useState('')
 
@@ -26,6 +28,8 @@ export default function ViewPage() {
     try {
       const result = await retrieveContent(otpValue)
       setContent(result.content)
+      setContentType(result.content_type || 'text/plain')
+      setEncoding(result.encoding || 'utf-8')
     } catch (err: any) {
       setError(err.message || 'Failed to retrieve content')
     } finally {
@@ -58,7 +62,11 @@ export default function ViewPage() {
           </>
         ) : (
           <>
-            <ContentDisplay content={content} />
+            <ContentDisplay 
+              content={content} 
+              content_type={contentType} 
+              encoding={encoding} 
+            />
             <Link href="/">
               <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-4 rounded-lg transition transform hover:scale-105">
                 ← Back to Home
