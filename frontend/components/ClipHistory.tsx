@@ -28,10 +28,10 @@ export default function ClipHistory({
     )
   }
 
-  const getTtlLabel = (ttl: 5 | 60 | 1440): string => {
+  const getTtlLabel = (ttl: 5 | 20 | 60): string => {
     if (ttl === 5) return '5m'
+    if (ttl === 20) return '20m'
     if (ttl === 60) return '1h'
-    if (ttl === 1440) return '24h'
     return '??'
   }
 
