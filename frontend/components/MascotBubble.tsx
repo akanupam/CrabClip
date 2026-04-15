@@ -22,7 +22,8 @@ export default function MascotBubble() {
 
       {/* The "Liquid" Bubble */}
       <motion.div
-        className="relative w-full h-full bg-white/80 backdrop-blur-md border-[6px] border-white shadow-premium overflow-hidden flex items-center justify-center group"
+        className="relative w-full h-full bg-white/95 border-[6px] border-white shadow-premium overflow-hidden flex items-center justify-center group"
+        style={{ willChange: 'border-radius, transform' }}
         animate={{
           borderRadius: [
             "60% 40% 30% 70% / 60% 30% 70% 40%",
@@ -59,6 +60,7 @@ export default function MascotBubble() {
             fill
             className="object-contain scale-[1.1]"
             priority
+            fetchPriority="high"
           />
         </motion.div>
       </motion.div>

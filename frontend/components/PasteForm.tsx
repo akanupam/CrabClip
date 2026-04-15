@@ -11,7 +11,7 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
   const [activeType, setActiveType] = useState<'text' | 'file'>('text')
   const [content, setContent] = useState('')
   const [file, setFile] = useState<File | null>(null)
-  const [ttl_minutes, setTtl] = useState<5 | 60 | 1440>(5)
+  const [ttl_minutes, setTtl] = useState<5 | 20 | 60>(5)
   const [fileError, setFileError] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -32,8 +32,8 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
     const selectedFile = e.target.files?.[0]
     setFileError('')
     if (!selectedFile) return
-    if (selectedFile.size > 5242880) {
-      setFileError('File too large! Max 5MB allowed.')
+    if (selectedFile.size > 10485760) {
+      setFileError('File too large! Max 10MB allowed.')
       setFile(null)
       if (fileInputRef.current) fileInputRef.current.value = ''
       return
@@ -108,9 +108,9 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Paste your secret text here..."
             disabled={loading}
-            className="glass-input w-full flex-1 p-5 text-slate-700 placeholder:text-slate-300 resize-none font-medium leading-relaxed"
+            className="glass-input w-full flex-1 p-5 text-slate-700 placeholder:text-slate-400 resize-none font-medium leading-relaxed"
           />
-          <div className="absolute bottom-4 right-4 text-[10px] font-black text-slate-300 uppercase tracking-widest pointer-events-none group-focus-within:text-crab-ocean/50 transition-colors">
+          <div className="absolute bottom-4 right-4 text-[10px] font-black text-slate-400 uppercase tracking-widest pointer-events-none group-focus-within:text-crab-ocean/50 transition-colors">
             {content.length} characters
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
             <>
               <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">📁</div>
               <p className="text-sm font-black text-slate-600">Click to upload or drag & drop</p>
-              <p className="text-xs text-slate-400 mt-2">Max size: 5MB</p>
+              <p className="text-xs text-slate-500 mt-2">Max size: 10MB</p>
             </>
           )}
         </div>
@@ -142,14 +142,14 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
       )}
 
       <div>
-        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">
+        <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">
           Self-Destruct in
         </label>
         <div className="grid grid-cols-3 gap-3">
           {[
             { label: '5 min', value: 5 as const },
+            { label: '20 min', value: 20 as const },
             { label: '1 hour', value: 60 as const },
-            { label: '24 hours', value: 1440 as const },
           ].map((preset) => (
             <button
               key={preset.value}

@@ -6,7 +6,7 @@ export interface HistoryItem {
   otp: string
   content_preview: string // First 100 chars or thumbnail
   created_at: number // Timestamp
-  ttl_minutes: 5 | 60 | 1440
+  ttl_minutes: 5 | 20 | 60
   content_type: string
 }
 

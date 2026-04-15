@@ -54,7 +54,7 @@ export default function Home() {
         otp: result.otp,
         content_preview: preview,
         created_at: Date.now(),
-        ttl_minutes: ttl_minutes as 5 | 60 | 1440,
+        ttl_minutes: ttl_minutes as 5 | 20 | 60,
         content_type,
       })
     } catch (err: any) {
@@ -134,9 +134,9 @@ export default function Home() {
               href="https://github.com/akanupam"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-[9px] font-black tracking-widest text-slate-600 uppercase flex items-center gap-1.5 hover:text-crab-coral transition-colors duration-300"
+              className="px-4 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-black tracking-widest text-slate-600 uppercase flex items-center gap-1.5 hover:text-crab-coral transition-colors duration-300"
             >
-              Crafted by <span className="text-crab-coral font-black">akanupam</span>
+              Crafted by <span className="text-crab-coral font-black lowercase tracking-widest">akanupam</span>
             </a>
           </div>
         </div>
@@ -158,17 +158,17 @@ export default function Home() {
               <div className="px-3 py-1 bg-white shadow-sm text-crab-coral rounded-full text-[10px] font-black inline-block uppercase tracking-[0.2em] border border-slate-50">
                 Secure · Fast · Branded
               </div>
-              <p className="text-sm lg:text-lg text-slate-400 font-bold leading-tight max-w-md pt-1">
+              <p className="text-sm lg:text-lg text-slate-500 font-bold leading-tight max-w-md pt-1">
                 Instantly share text & files across devices. Generate a secure 4-digit code, anyone with it can fetch your clip.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2 lg:gap-3 justify-center lg:justify-start pt-1">
-              <div className="flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2.5 bg-white border border-slate-50 rounded-2xl text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest shadow-sm">
+              <div className="flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2.5 bg-white border border-slate-50 rounded-2xl text-[9px] lg:text-[10px] font-black text-slate-500 uppercase tracking-widest shadow-sm">
                 <span className="w-1.5 lg:w-2 h-1.5 lg:h-2 bg-emerald-400 rounded-full animate-pulse" />
                 Secure
               </div>
-              <div className="flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2.5 bg-white border border-slate-100 rounded-2xl text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest shadow-sm">
+              <div className="flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2.5 bg-white border border-slate-100 rounded-2xl text-[9px] lg:text-[10px] font-black text-slate-500 uppercase tracking-widest shadow-sm">
                 <span className="w-1.5 lg:w-2 h-1.5 lg:h-2 bg-crab-ocean rounded-full animate-pulse" />
                 Anonymous
               </div>
@@ -196,7 +196,7 @@ export default function Home() {
               onClick={() => setActiveTab('share')}
               className={`flex-1 py-3.5 text-xs font-black rounded-xl transition-all duration-300 uppercase tracking-widest ${activeTab === 'share'
                   ? 'bg-white text-slate-800 shadow-sm border border-slate-100'
-                  : 'text-slate-300 hover:text-slate-500'
+                  : 'text-slate-400 hover:text-slate-500'
                 }`}
             >
               Share
@@ -205,7 +205,7 @@ export default function Home() {
               onClick={() => setActiveTab('retrieve')}
               className={`flex-1 py-3.5 text-xs font-black rounded-xl transition-all duration-300 uppercase tracking-widest ${activeTab === 'retrieve'
                   ? 'bg-white text-slate-800 shadow-sm border border-slate-100'
-                  : 'text-slate-300 hover:text-slate-500'
+                  : 'text-slate-400 hover:text-slate-500'
                 }`}
             >
               Retrieve

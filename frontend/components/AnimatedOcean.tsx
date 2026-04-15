@@ -20,11 +20,12 @@ const Bubble = ({ index }: { index: number }) => {
 
   return (
     <motion.div
-      className="absolute bottom-[-20px] rounded-full bg-white/40 backdrop-blur-[2px] border-[1.5px] border-cyan-400/40"
+      className="absolute bottom-[-20px] rounded-full bg-white/40 border-[1.5px] border-cyan-400/40"
       style={{
         left: `${randomX}%`,
         width: randomSize + 10,
         height: randomSize + 10,
+        willChange: 'transform, opacity'
       }}
       initial={{ y: 0, opacity: 0, scale: 0.5 }}
       animate={{
@@ -47,7 +48,8 @@ export default function AnimatedOcean() {
   const [bubbles, setBubbles] = useState<number[]>([])
 
   useEffect(() => {
-    setBubbles(Array.from({ length: 100 }, (_, i) => i))
+    // Reduced bubble count from 100 to 25 to massively improve mobile performance
+    setBubbles(Array.from({ length: 25 }, (_, i) => i))
   }, [])
 
   return (
@@ -57,6 +59,7 @@ export default function AnimatedOcean() {
         {/* Wave 1 (Deepest) */}
         <motion.svg
           className="absolute bottom-0 left-0 w-[200%] h-[144px] opacity-[0.08] text-cyan-500"
+          style={{ willChange: 'transform' }}
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           animate={{ x: ['0%', '-50%'] }}
@@ -71,6 +74,7 @@ export default function AnimatedOcean() {
         {/* Wave 2 */}
         <motion.svg
           className="absolute bottom-0 left-0 w-[200%] h-[168px] opacity-[0.12] text-cyan-400"
+          style={{ willChange: 'transform' }}
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           animate={{ x: ['-50%', '0%'] }}
@@ -85,6 +89,7 @@ export default function AnimatedOcean() {
         {/* Wave 3 (Front) */}
         <motion.svg
           className="absolute bottom-0 left-0 w-[200%] h-[120px] opacity-[0.05] text-cyan-300"
+          style={{ willChange: 'transform' }}
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           animate={{ x: ['0%', '-50%'] }}
