@@ -23,6 +23,7 @@ export default function Home() {
   const [retrievedContent, setRetrievedContent] = useState<string | null>(null)
   const [retrievedContentType, setRetrievedContentType] = useState<string>('text/plain')
   const [retrievedEncoding, setRetrievedEncoding] = useState<string>('utf-8')
+  const [retrievedFilename, setRetrievedFilename] = useState<string | undefined>(undefined)
   const [retrieveLoading, setRetrieveLoading] = useState(false)
   const [retrieveError, setRetrieveError] = useState('')
   const [connectionError, setConnectionError] = useState(false)
@@ -40,11 +41,11 @@ export default function Home() {
     }
   }
 
-  const handlePaste = async (content: string, ttl_minutes: number, content_type: string) => {
+  const handlePaste = async (content: string, ttl_minutes: number, content_type: string, filename?: string) => {
     setCreateLoading(true)
     setCreateError('')
     try {
-      const result = await createPaste(content, ttl_minutes, content_type)
+      const result = await createPaste(content, ttl_minutes, content_type, filename)
       setOtp(result.otp)
       setExpiresAt(Number(result.expires_at))
 
@@ -77,6 +78,7 @@ export default function Home() {
       setRetrievedContent(result.content)
       setRetrievedContentType(result.content_type || 'text/plain')
       setRetrievedEncoding(result.encoding || 'utf-8')
+      setRetrievedFilename(result.filename)
     } catch (err: any) {
       setRetrieveError(err.message || 'Failed to retrieve content')
     } finally {
@@ -94,6 +96,7 @@ export default function Home() {
     setRetrievedContent(null)
     setRetrievedContentType('text/plain')
     setRetrievedEncoding('utf-8')
+    setRetrievedFilename(undefined)
     setRetrieveError('')
   }
 
@@ -249,6 +252,7 @@ export default function Home() {
                       content={retrievedContent}
                       content_type={retrievedContentType}
                       encoding={retrievedEncoding}
+                      filename={retrievedFilename}
                     />
                     <button onClick={handleResetRetrieve} className="btn-secondary w-full uppercase tracking-widest text-[10px] flex-shrink-0">
                       Fetch Another

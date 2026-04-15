@@ -16,15 +16,17 @@ export interface RetrieveResponse {
   content: string
   content_type: string
   encoding: string
+  filename?: string
 }
 
 export const createPaste = async (
   content: string,
   ttl_minutes: number = 5,
-  content_type: string = 'text/plain'
+  content_type: string = 'text/plain',
+  filename?: string
 ): Promise<PasteResponse> => {
   try {
-    const response = await api.post('/paste', { content, ttl_minutes, content_type })
+    const response = await api.post('/paste', { content, ttl_minutes, content_type, filename })
     return response.data
   } catch (error: any) {
     if (error.response) {

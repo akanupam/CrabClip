@@ -91,6 +91,7 @@ async def create_paste(request: PasteRequest, req: Request):
             "content": request.content,
             "content_type": request.content_type,
             "encoding": encoding,
+            "filename": request.filename,
             "ttl_minutes": request.ttl_minutes,
             "created_at": datetime.now(timezone.utc),
             "expires_at": expires_at
@@ -137,11 +138,12 @@ async def retrieve_paste(otp: str, req: Request):
         # Extract content metadata
         content_type = paste.get("content_type", "text/plain")
         encoding = paste.get("encoding", "utf-8")
+        filename = paste.get("filename")
         
         # Content is no longer deleted after retrieval. It remains until expires_at.
         logger.info(f"Paste retrieved from IP: {client_ip}")
         
-        return RetrieveResponse(content=paste["content"], content_type=content_type, encoding=encoding)
+        return RetrieveResponse(content=paste["content"], content_type=content_type, encoding=encoding, filename=filename)
     
     except HTTPException:
         raise

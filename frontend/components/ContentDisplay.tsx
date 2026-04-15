@@ -7,12 +7,14 @@ interface ContentDisplayProps {
   content: string
   content_type?: string
   encoding?: string
+  filename?: string
 }
 
 export default function ContentDisplay({
   content,
   content_type = 'text/plain',
   encoding = 'utf-8',
+  filename,
 }: ContentDisplayProps) {
   const [copied, setCopied] = useState(false)
 
@@ -24,7 +26,7 @@ export default function ContentDisplay({
 
   const handleDownload = () => {
     let url: string
-    let filename = 'download'
+    let downloadFilename = filename || 'download'
 
     if (encoding === 'base64') {
       const binaryString = atob(content)
@@ -34,30 +36,35 @@ export default function ContentDisplay({
       }
       const blob = new Blob([bytes], { type: content_type })
       url = URL.createObjectURL(blob)
-      filename = getFilenameFromContentType(content_type)
+      if (!filename) {
+          downloadFilename = getFilenameFromContentType(content_type)
+      }
     } else {
       const blob = new Blob([content], { type: 'text/plain' })
       url = URL.createObjectURL(blob)
-      filename = 'paste.txt'
+      if (!filename) {
+          downloadFilename = 'paste.txt'
+      }
     }
 
     const a = document.createElement('a')
     a.href = url
-    a.download = filename
+    a.download = downloadFilename
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
   }
 
-  const getFilenameFromContentType = (type: string): string => {
+  const getFilenameFromContentType = (type: string | undefined): string => {
+    if (!type) return 'file.bin'
     const ext = type.split('/')[1]?.split(';')[0] || 'bin'
     return `file.${ext}`
   }
 
-  const isImage = content_type.startsWith('image/')
+  const isImage = content_type?.startsWith('image/') ?? false
   const isPdf = content_type === 'application/pdf'
-  const isText = content_type.startsWith('text/') || content_type === 'application/json'
+  const isText = content_type?.startsWith('text/') || content_type === 'application/json'
 
   return (
     <div className="flex-1 flex flex-col gap-5 animate-fade-in">

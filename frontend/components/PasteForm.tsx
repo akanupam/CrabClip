@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 
 interface PasteFormProps {
-  onPaste: (content: string, ttl_minutes: number, content_type: string) => Promise<void>
+  onPaste: (content: string, ttl_minutes: number, content_type: string, filename?: string) => Promise<void>
   loading: boolean
 }
 
@@ -56,7 +56,7 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
         setFileError('')
         const base64 = await fileToBase64(file)
         const mimeType = file.type || 'application/octet-stream'
-        await onPaste(base64, ttl_minutes, mimeType)
+        await onPaste(base64, ttl_minutes, mimeType, file.name)
         setFile(null)
         if (fileInputRef.current) fileInputRef.current.value = ''
       } catch (error: any) {

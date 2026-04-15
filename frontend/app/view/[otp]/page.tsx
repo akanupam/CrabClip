@@ -13,6 +13,7 @@ export default function ViewPage() {
   const [content, setContent] = useState<string | null>(null)
   const [contentType, setContentType] = useState<string>('text/plain')
   const [encoding, setEncoding] = useState<string>('utf-8')
+  const [filename, setFilename] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(!!otp)
   const [error, setError] = useState('')
 
@@ -30,6 +31,7 @@ export default function ViewPage() {
       setContent(result.content)
       setContentType(result.content_type || 'text/plain')
       setEncoding(result.encoding || 'utf-8')
+      setFilename(result.filename)
     } catch (err: any) {
       setError(err.message || 'Failed to retrieve content')
     } finally {
@@ -66,6 +68,7 @@ export default function ViewPage() {
               content={content} 
               content_type={contentType} 
               encoding={encoding} 
+              filename={filename}
             />
             <Link href="/">
               <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-4 rounded-lg transition transform hover:scale-105">
