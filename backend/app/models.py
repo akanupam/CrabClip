@@ -4,7 +4,7 @@ from typing import Optional, Literal
 
 
 class PasteRequest(BaseModel):
-    content: str = Field(..., max_length=5242880)  # 5 MB
+    content: str = Field(..., max_length=10485760)  # 10 MB
     ttl_minutes: int = Field(5, ge=1, le=1440)  # 1 min to 24 hours, default 5 min
     content_type: str = Field("text/plain")  # mime type: text/plain, image/png, etc.
     filename: Optional[str] = None

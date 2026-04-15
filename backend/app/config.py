@@ -10,13 +10,13 @@ class Settings(BaseSettings):
     
     # Internal Config
     OTP_EXPIRATION_SECONDS: int = 300
-    MAX_PASTE_SIZE_BYTES: int = 5242880
+    MAX_PASTE_SIZE_BYTES: int = 10485760
     OTP_LENGTH: int = 4
     RATE_LIMIT_REQUESTS: int = 10
     RATE_LIMIT_WINDOW_SECONDS: int = 300
     
     # TTL presets
-    TTL_PRESETS_SECONDS: dict = {5: 300, 60: 3600, 1440: 86400}
+    TTL_PRESETS_SECONDS: dict = {5: 300, 20: 1200, 60: 3600}
     
     # Supported content types
     SUPPORTED_CONTENT_TYPES: list = [

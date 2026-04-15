@@ -61,7 +61,7 @@ async def create_paste(request: PasteRequest, req: Request):
     settings = get_settings()
     
     if len(request.content) > settings.MAX_PASTE_SIZE_BYTES:
-        raise HTTPException(status_code=413, detail="Payload too large. Max 5MB allowed.")
+        raise HTTPException(status_code=413, detail="Payload too large. Max 10MB allowed.")
     
     # Validate content type
     if request.content_type not in settings.SUPPORTED_CONTENT_TYPES:
@@ -69,7 +69,7 @@ async def create_paste(request: PasteRequest, req: Request):
     
     # Validate TTL
     if request.ttl_minutes not in settings.TTL_PRESETS_SECONDS:
-        raise HTTPException(status_code=400, detail="Invalid TTL. Must be 5, 60, or 1440 minutes")
+        raise HTTPException(status_code=400, detail="Invalid TTL. Must be 5, 20, or 60 minutes")
     
     try:
         db = get_database()
