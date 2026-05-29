@@ -30,17 +30,19 @@ Perfect for sharing passwords, API keys, documents, and temporary notes.
 - ⚡ **Fast** - Instant sharing, no signup required
 - 🎯 **Anonymous** - No tracking, no accounts
 - 📱 **Mobile Friendly** - Works on any device
+- 🎨 **Minimalist Design** - Clean, responsive UI with seamless dark/light mode toggle
 - 🗑️ **Auto-Delete** - Content expires automatically
-- 🛡️ **Rate Limited** - Protected against brute-force attacks
+- 🛡️ **Rate Limited** - Database-level protection against spam and brute-force attacks
 
 ---
 
 ## 🔒 Security
 
 ✅ OTPs hashed with SHA-256  
+✅ Guaranteed unique OTP generation (collision safe)
 ✅ One-time access enforcement  
-✅ Automatic TTL-based deletion  
-✅ Rate limiting (10 req/5min)  
+✅ Automatic TTL-based deletion (MongoDB indexes)
+✅ Distributed Rate limiting (5 creates/5min, 10 retrieves/5min)  
 ✅ CORS enabled (configurable)  
 
 ---
