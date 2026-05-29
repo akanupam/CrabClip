@@ -211,7 +211,7 @@ export default function Home() {
                   Your go-to online clipboard.
                 </p>
                 
-                <ul className="text-base lg:text-lg text-zinc-400 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0 space-y-2 lg:space-y-3 text-left w-max lg:w-auto">
+                <ul className="text-base lg:text-lg text-zinc-400 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0 space-y-2 lg:space-y-3 text-left w-fit lg:w-auto">
                   <li className="flex items-center gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-crab-coral flex-shrink-0"></span>
                     Drop text or files to generate a secure code.
