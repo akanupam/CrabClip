@@ -6,13 +6,12 @@ from datetime import datetime, timedelta, timezone
 import secrets
 import hashlib
 import logging
+from pymongo.errors import DuplicateKeyError
+from app.rate_limiter import check_rate_limit
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["paste"])
-
-# In-memory rate limiting (IP -> (attempts, reset_time))
-rate_limit_store = {}
 
 
 def hash_otp(otp: str) -> str:
@@ -28,31 +27,6 @@ def verify_otp(otp: str, hashed: str) -> bool:
 def generate_otp(length: int = 6) -> str:
     """Generate random numeric OTP"""
     return "".join(str(secrets.randbelow(10)) for _ in range(length))
-
-
-def check_rate_limit(client_ip: str) -> bool:
-    """Check and update rate limit for client IP"""
-    settings = get_settings()
-    now = datetime.now(timezone.utc)
-    
-    if client_ip not in rate_limit_store:
-        rate_limit_store[client_ip] = {"attempts": 0, "reset_time": now + timedelta(seconds=settings.RATE_LIMIT_WINDOW_SECONDS)}
-        return True
-    
-    entry = rate_limit_store[client_ip]
-    
-    # Reset if window has passed
-    if now >= entry["reset_time"]:
-        entry["attempts"] = 0
-        entry["reset_time"] = now + timedelta(seconds=settings.RATE_LIMIT_WINDOW_SECONDS)
-        return True
-    
-    # Check if limit exceeded
-    if entry["attempts"] >= settings.RATE_LIMIT_REQUESTS:
-        return False
-    
-    entry["attempts"] += 1
-    return True
 
 
 @router.post("/paste", response_model=PasteResponse)
@@ -72,11 +46,10 @@ async def create_paste(request: PasteRequest, req: Request):
         raise HTTPException(status_code=400, detail="Invalid TTL. Must be 5, 20, or 60 minutes")
     
     try:
-        db = get_database()
+        # Check rate limit for paste creation
+        check_rate_limit(req, "paste", settings.RATE_LIMIT_PASTE_REQUESTS)
         
-        # Generate OTP and hash it
-        otp = generate_otp(settings.OTP_LENGTH)
-        hashed_otp = hash_otp(otp)
+        db = get_database()
         
         # Create expiration time based on ttl_minutes (timezone-aware UTC)
         ttl_seconds = settings.TTL_PRESETS_SECONDS[request.ttl_minutes]
@@ -85,26 +58,40 @@ async def create_paste(request: PasteRequest, req: Request):
         # Determine encoding based on content type
         encoding = "base64" if request.content_type.startswith("image/") or request.content_type == "application/pdf" else "utf-8"
         
-        # Store in database
-        paste_doc = {
-            "otp_hash": hashed_otp,
-            "content": request.content,
-            "content_type": request.content_type,
-            "encoding": encoding,
-            "filename": request.filename,
-            "ttl_minutes": request.ttl_minutes,
-            "created_at": datetime.now(timezone.utc),
-            "expires_at": expires_at
-        }
-        
-        result = db.pastes.insert_one(paste_doc)
-        
-        logger.info(f"Paste created with ID: {result.inserted_id}, TTL: {request.ttl_minutes} min")
-        
-        # Convert expires_at to Unix timestamp in milliseconds for unambiguous client-side parsing
-        expires_at_ms = int(expires_at.timestamp() * 1000)
-        
-        return PasteResponse(otp=otp, expires_at=expires_at_ms)
+        max_retries = 10
+        for _ in range(max_retries):
+            # Generate OTP and hash it
+            otp = generate_otp(settings.OTP_LENGTH)
+            hashed_otp = hash_otp(otp)
+            
+            # Store in database
+            paste_doc = {
+                "otp_hash": hashed_otp,
+                "content": request.content,
+                "content_type": request.content_type,
+                "encoding": encoding,
+                "filename": request.filename,
+                "ttl_minutes": request.ttl_minutes,
+                "created_at": datetime.now(timezone.utc),
+                "expires_at": expires_at
+            }
+            
+            try:
+                result = db.pastes.insert_one(paste_doc)
+                logger.info(f"Paste created with ID: {result.inserted_id}, TTL: {request.ttl_minutes} min")
+                
+                # Convert expires_at to Unix timestamp in milliseconds for unambiguous client-side parsing
+                expires_at_ms = int(expires_at.timestamp() * 1000)
+                
+                return PasteResponse(otp=otp, expires_at=expires_at_ms)
+            except DuplicateKeyError:
+                # OTP collision occurred, retry
+                logger.warning("OTP collision detected, generating a new one...")
+                continue
+                
+        # If we exhausted retries
+        logger.error("Failed to generate a unique OTP after multiple attempts")
+        raise HTTPException(status_code=500, detail="Failed to create paste due to high collision rate")
     
     except HTTPException:
         raise
@@ -116,13 +103,13 @@ async def create_paste(request: PasteRequest, req: Request):
 @router.get("/retrieve/{otp}", response_model=RetrieveResponse)
 async def retrieve_paste(otp: str, req: Request):
     """Retrieve paste by OTP and delete it (one-time access)"""
-    client_ip = req.client.host
-    
-    # Check rate limit
-    if not check_rate_limit(client_ip):
-        raise HTTPException(status_code=429, detail="Too many attempts. Try again later.")
+    client_ip = req.client.host if req.client else "unknown"
+    settings = get_settings()
     
     try:
+        # Check rate limit for retrieve
+        check_rate_limit(req, "retrieve", settings.RATE_LIMIT_REQUESTS)
+        
         db = get_database()
         
         # Direct lookup using SHA-256 hash

@@ -5,40 +5,63 @@
 @layer base {
   :root {
     color-scheme: light;
+    --zinc-50: 9 9 11;
+    --zinc-100: 24 24 27;
+    --zinc-200: 39 39 42;
+    --zinc-300: 63 63 70;
+    --zinc-400: 82 82 91;
+    --zinc-500: 113 113 122;
+    --zinc-600: 161 161 170;
+    --zinc-700: 212 212 216;
+    --zinc-800: 228 228 231;
+    --zinc-900: 244 244 245;
+    --zinc-950: 255 255 255;
   }
 
   body {
-    @apply bg-crab-sand text-slate-800 antialiased min-h-screen font-sans lg:overflow-hidden;
+    @apply bg-zinc-950 text-zinc-100 antialiased min-h-screen font-sans lg:overflow-hidden selection:bg-crab-coral/30 selection:text-zinc-100 transition-colors duration-500;
   }
-
-  ::selection {
-    @apply bg-crab-coral/20 text-crab-coral;
+  :root.dark, body.dark {
+    color-scheme: dark;
+    --zinc-50: 250 250 250;
+    --zinc-100: 244 244 245;
+    --zinc-200: 228 228 231;
+    --zinc-300: 212 212 216;
+    --zinc-400: 161 161 170;
+    --zinc-500: 113 113 122;
+    --zinc-600: 82 82 91;
+    --zinc-700: 63 63 70;
+    --zinc-800: 39 39 42;
+    --zinc-900: 24 24 27;
+    --zinc-950: 9 9 11;
   }
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-white/95 backdrop-blur-3xl border border-slate-200/80 rounded-[2.5rem] relative overflow-hidden;
-    box-shadow: 0 32px 64px -12px rgba(14, 165, 233, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.06), 0 8px 24px rgba(0,0,0,0.06);
+    @apply bg-zinc-900 border border-zinc-800 rounded-2xl relative overflow-hidden shadow-lg;
   }
 
+  /* Crisp input fields */
   .glass-input {
-    @apply bg-sky-50/70 border-2 border-sky-200/60 rounded-2xl focus:outline-none focus:border-crab-coral/50 focus:ring-4 focus:ring-crab-coral/10 transition-all duration-300 text-slate-700;
+    @apply bg-zinc-950 border border-zinc-800 rounded-xl focus:outline-none focus:border-crab-coral focus:ring-1 focus:ring-crab-coral transition-colors duration-200 text-zinc-100 placeholder:text-zinc-400 shadow-sm;
   }
 
+  /* Solid vibrant primary button */
   .btn-primary {
-    @apply bg-crab-coral hover:bg-[#ff6b6b] text-white font-black py-5 px-10 rounded-2xl transition-all duration-500 shadow-vibrant active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none uppercase tracking-widest text-[15px];
+    @apply bg-crab-coral hover:bg-crab-coral-light text-white font-medium py-3.5 px-6 rounded-xl transition-colors duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none text-sm tracking-wide;
   }
 
+  /* Sleek outline secondary button */
   .btn-secondary {
-    @apply bg-white hover:bg-slate-50 text-slate-500 font-black py-5 px-10 rounded-2xl border border-slate-300 transition-all duration-500 active:scale-[0.96] shadow-sm uppercase tracking-widest text-[15px];
+    @apply bg-transparent hover:bg-zinc-800 text-zinc-100 font-medium py-3.5 px-6 rounded-xl border border-zinc-800 transition-colors duration-200 active:scale-[0.98] text-sm tracking-wide;
   }
 }
 
 /* Custom minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -46,12 +69,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  @apply bg-zinc-800;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  @apply bg-zinc-700;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -60,7 +83,5 @@
 
 .no-scrollbar {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }

@@ -41,6 +41,13 @@ def get_database():
     except Exception as e:
         logger.warning(f"TTL index creation warning: {e}")
     
+    # Create TTL index for rate limits
+    try:
+        db.rate_limits.create_index("expires_at", expireAfterSeconds=0)
+        logger.info("TTL index created/verified for rate_limits collection")
+    except Exception as e:
+        logger.warning(f"Rate limits TTL index creation warning: {e}")
+    
     # Create index on otp_hash for faster retrieval lookups
     try:
         db.pastes.create_index("otp_hash", unique=True)

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Check, Copy, Link as LinkIcon } from 'lucide-react'
 
 interface OtpDisplayProps {
   otp: string
@@ -34,44 +35,43 @@ export default function OtpDisplay({ otp, expiresAt }: OtpDisplayProps) {
     setTimeout(() => setCopied(null), 2000)
   }
 
-  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/view/${otp}`
+  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/?retrieve=${otp}`
 
   return (
     <div className="flex-1 flex flex-col gap-5 animate-fade-in">
       <div className="text-center space-y-1">
-        <h3 className="text-2xl font-black text-slate-800 tracking-tight">Clip is Locked & Ready</h3>
-        <p className="text-sm text-slate-400 font-medium px-8">Your secure link has been generated. Share the passcode below.</p>
+        <h3 className="text-2xl font-semibold text-zinc-100 tracking-tight">Clip is Locked & Ready</h3>
+        <p className="text-sm text-zinc-400 font-medium px-8">Your secure link has been generated. Share the passcode below.</p>
       </div>
 
       {/* OTP box — grows to fill remaining space */}
       <div className="relative group flex-1 flex flex-col">
-        <div className="flex-1 flex items-center justify-center glass-input relative overflow-hidden group border-crab-ocean/20 bg-crab-ocean/[0.02] shadow-sm">
-          <div className="absolute inset-0 bg-gradient-to-br from-crab-ocean/5 to-crab-coral/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div className="text-6xl font-black tracking-[0.4em] text-slate-800 relative z-10 selection:bg-crab-ocean/10">
+        <div className="flex-1 flex items-center justify-center glass-input relative overflow-hidden group border-zinc-800 bg-zinc-950">
+          <div className="text-6xl font-bold tracking-[0.4em] text-zinc-100 relative z-10 selection:bg-crab-coral/10">
             {otp}
           </div>
         </div>
         <button
           onClick={() => handleCopy(otp, 'otp')}
-          className="absolute -top-3 -right-3 w-10 h-10 bg-white border border-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:text-crab-ocean shadow-sm transition-all hover:scale-110 active:scale-90"
+          className="absolute -top-3 -right-3 w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-100 shadow-sm transition-transform hover:scale-110 active:scale-95"
           title="Copy Code"
         >
-          {copied === 'otp' ? '✓' : '⎘'}
+          {copied === 'otp' ? <Check size={18} /> : <Copy size={18} />}
         </button>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="p-4 rounded-2xl bg-sky-50/60 border border-sky-200/50 space-y-1">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Expires In</p>
-          <p className={`text-2xl font-black text-center tabular-nums ${timeLeft === 'Expired' ? 'text-red-500' : 'text-slate-800'}`}>
+        <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-1 shadow-sm">
+          <p className="text-xs font-medium text-zinc-400 text-center">Expires In</p>
+          <p className={`text-2xl font-semibold text-center tabular-nums ${timeLeft === 'Expired' ? 'text-red-400' : 'text-zinc-100'}`}>
             {timeLeft}
           </p>
         </div>
-        <div className="p-4 rounded-2xl bg-sky-50/60 border border-sky-200/50 space-y-1">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Status</p>
-          <div className="flex items-center justify-center gap-2">
-             <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-             <p className="text-sm font-black text-slate-800">Secure</p>
+        <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-1 shadow-sm">
+          <p className="text-xs font-medium text-zinc-400 text-center">Status</p>
+          <div className="flex items-center justify-center gap-2 mt-2">
+             <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+             <p className="text-sm font-semibold text-zinc-100">Secure</p>
           </div>
         </div>
       </div>
@@ -79,11 +79,15 @@ export default function OtpDisplay({ otp, expiresAt }: OtpDisplayProps) {
       <div className="space-y-3">
         <button
           onClick={() => handleCopy(shareUrl, 'link')}
-          className="btn-primary w-full py-4 text-base flex items-center justify-center gap-3"
+          className="btn-primary w-full flex items-center justify-center gap-3"
         >
-          {copied === 'link' ? '✓ Link Copied!' : 'Copy Shareable Link'}
+          {copied === 'link' ? (
+            <><Check size={16} /> Link Copied!</>
+          ) : (
+            <><LinkIcon size={16} /> Copy Shareable Link</>
+          )}
         </button>
-        <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest">
+        <p className="text-xs text-center text-zinc-400 font-medium">
             This clip will be deleted forever after expiration
         </p>
       </div>

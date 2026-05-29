@@ -17,18 +17,40 @@ export const useClipHistory = () => {
   const [history, setHistory] = useState<HistoryItem[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // Load history from localStorage on mount
+  // Load history from localStorage on mount and setup interval to clean expired clips
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const parsed = JSON.parse(stored)
-        setHistory(Array.isArray(parsed) ? parsed : [])
+    const loadAndClean = () => {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY)
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          if (Array.isArray(parsed)) {
+            const now = Date.now()
+            const valid = parsed.filter(h => now < h.created_at + h.ttl_minutes * 60 * 1000)
+            setHistory(valid)
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(valid))
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load history:', e)
       }
-    } catch (e) {
-      console.warn('Failed to load history:', e)
+      setIsLoaded(true)
     }
-    setIsLoaded(true)
+
+    loadAndClean()
+
+    const interval = setInterval(() => {
+      setHistory(prev => {
+        const now = Date.now()
+        const valid = prev.filter(h => now < h.created_at + h.ttl_minutes * 60 * 1000)
+        if (valid.length !== prev.length) {
+          return valid
+        }
+        return prev
+      })
+    }, 10000) // check every 10 seconds
+
+    return () => clearInterval(interval)
   }, [])
 
   // Save history to localStorage whenever it changes

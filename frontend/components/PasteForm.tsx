@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { FileText, FolderUp } from 'lucide-react'
 
 interface PasteFormProps {
   onPaste: (content: string, ttl_minutes: number, content_type: string, filename?: string) => Promise<void>
@@ -67,29 +68,29 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="h-full flex flex-col gap-5 animate-fade-in">
-      <div className="flex gap-6 border-b border-slate-100 pb-2 overflow-x-auto custom-scrollbar">
+      <div className="flex gap-6 border-b border-zinc-800 pb-2 overflow-x-auto custom-scrollbar">
         <button
           type="button"
           onClick={() => setActiveType('text')}
-          className={`pb-2 text-sm font-black transition-all relative ${
-            activeType === 'text' ? 'text-crab-coral' : 'text-slate-400 hover:text-slate-600'
+          className={`pb-2 text-sm font-medium transition-colors relative ${
+            activeType === 'text' ? 'text-crab-coral' : 'text-zinc-400 hover:text-zinc-100'
           }`}
         >
           Snippet
           {activeType === 'text' && (
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-crab-coral rounded-full animate-scale-in" />
+            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-crab-coral rounded-t-full animate-scale-in" />
           )}
         </button>
         <button
           type="button"
           onClick={() => setActiveType('file')}
-          className={`pb-2 text-sm font-black transition-all relative ${
-            activeType === 'file' ? 'text-crab-coral' : 'text-slate-400 hover:text-slate-600'
+          className={`pb-2 text-sm font-medium transition-colors relative ${
+            activeType === 'file' ? 'text-crab-coral' : 'text-zinc-400 hover:text-zinc-100'
           }`}
         >
           Drop File
           {activeType === 'file' && (
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-crab-coral rounded-full animate-scale-in" />
+            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-crab-coral rounded-t-full animate-scale-in" />
           )}
         </button>
       </div>
@@ -108,41 +109,45 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Paste your secret text here..."
             disabled={loading}
-            className="glass-input w-full flex-1 p-5 text-slate-700 placeholder:text-slate-400 resize-none font-medium leading-relaxed"
+            className="glass-input w-full flex-1 p-4 text-zinc-100 placeholder:text-zinc-400 resize-none font-medium leading-relaxed"
           />
-          <div className="absolute bottom-4 right-4 text-[10px] font-black text-slate-400 uppercase tracking-widest pointer-events-none group-focus-within:text-crab-ocean/50 transition-colors">
+          <div className="absolute bottom-3 right-4 text-xs font-medium text-zinc-400 pointer-events-none group-focus-within:text-crab-coral transition-colors">
             {content.length} characters
           </div>
         </div>
       ) : (
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="glass-input flex-1 border-dashed border-2 border-slate-200 flex flex-col items-center justify-center cursor-pointer hover:border-crab-ocean/50 hover:bg-crab-ocean/[0.02] transition-all group"
+          className="glass-input flex-1 border-dashed border-2 flex flex-col items-center justify-center cursor-pointer hover:border-crab-coral hover:bg-zinc-800/50 transition-colors group"
         >
           {file ? (
             <div className="flex flex-col items-center">
-              <div className="text-4xl mb-2">🐚</div>
-              <p className="text-sm font-black text-slate-600">{file.name}</p>
-              <p className="text-xs text-slate-400 mt-1">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+              <div className="text-zinc-500 mb-3 bg-zinc-800/30 p-3 rounded-xl">
+                <FileText size={32} strokeWidth={1.5} />
+              </div>
+              <p className="text-sm font-medium text-zinc-100">{file.name}</p>
+              <p className="text-xs text-zinc-400 mt-1">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
             </div>
           ) : (
             <>
-              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">📁</div>
-              <p className="text-sm font-black text-slate-600">Click to upload or drag & drop</p>
-              <p className="text-xs text-slate-500 mt-2">Max size: 10MB</p>
+              <div className="text-zinc-500 mb-3 group-hover:-translate-y-1 transition-transform bg-zinc-800/30 p-3 rounded-xl">
+                <FolderUp size={32} strokeWidth={1.5} />
+              </div>
+              <p className="text-sm font-medium text-zinc-100">Click to upload or drag & drop</p>
+              <p className="text-xs text-zinc-400 mt-2">Max size: 10MB</p>
             </>
           )}
         </div>
       )}
 
       {fileError && (
-        <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-500 text-xs font-bold animate-slide-up">
-          ⚠ {fileError}
+        <div className="p-3 rounded-lg bg-red-950/30 border border-red-900 text-red-400 text-sm font-medium animate-slide-up">
+          {fileError}
         </div>
       )}
 
       <div>
-        <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">
+        <label className="block text-xs font-medium text-zinc-400 mb-3">
           Self-Destruct in
         </label>
         <div className="grid grid-cols-3 gap-3">
@@ -155,10 +160,10 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
               key={preset.value}
               type="button"
               onClick={() => setTtl(preset.value)}
-              className={`py-3 text-xs font-black rounded-xl transition-all border shadow-sm ${
+              className={`py-2 text-sm font-medium rounded-lg transition-colors border ${
                 ttl_minutes === preset.value
-                  ? 'bg-crab-coral text-white border-crab-coral shadow-lg scale-[1.02]'
-                  : 'bg-sky-50 text-slate-500 border-sky-200 hover:bg-sky-100 hover:text-slate-700'
+                  ? 'bg-crab-coral text-white border-crab-coral'
+                  : 'bg-transparent text-zinc-400 border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100'
               }`}
             >
               {preset.label}
@@ -175,7 +180,6 @@ export default function PasteForm({ onPaste, loading }: PasteFormProps) {
         <span className="relative z-10">
           {loading ? 'Encrypting...' : 'Generate Secure Link'}
         </span>
-        <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
       </button>
     </form>
   )

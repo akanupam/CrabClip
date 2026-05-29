@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     MAX_PASTE_SIZE_BYTES: int = 10485760
     OTP_LENGTH: int = 4
     RATE_LIMIT_REQUESTS: int = 10
+    RATE_LIMIT_PASTE_REQUESTS: int = 5
     RATE_LIMIT_WINDOW_SECONDS: int = 300
     
     # TTL presets
