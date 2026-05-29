@@ -40,7 +40,6 @@ Perfect for sharing passwords, API keys, documents, and temporary notes.
 
 ✅ OTPs hashed with SHA-256  
 ✅ Guaranteed unique OTP generation (collision safe)
-✅ One-time access enforcement  
 ✅ Automatic TTL-based deletion (MongoDB indexes)
 ✅ Distributed Rate limiting (5 creates/5min, 10 retrieves/5min)  
 ✅ CORS enabled (configurable)  
@@ -51,9 +50,6 @@ Perfect for sharing passwords, API keys, documents, and temporary notes.
 
 **Q: How long does content stay?**  
 A: Default 5 minutes. Customizable to 1 hour or 24 hours.
-
-**Q: Can I retrieve multiple times?**  
-A: No. Content is deleted immediately after first retrieval.
 
 **Q: Why do you need my OTP?**  
 A: To fetch your specific content. It's encrypted and hashed.
