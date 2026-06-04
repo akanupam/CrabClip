@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     
     # Internal Config
     OTP_EXPIRATION_SECONDS: int = 300
-    MAX_PASTE_SIZE_BYTES: int = 10485760
+    MAX_PASTE_SIZE_BYTES: int = 15000000  # Increased to allow 10MB base64 encoded
     OTP_LENGTH: int = 4
     RATE_LIMIT_REQUESTS: int = 10
     RATE_LIMIT_PASTE_REQUESTS: int = 5
@@ -24,7 +24,8 @@ class Settings(BaseSettings):
         "text/plain", "text/html", "text/css", "text/javascript",
         "application/json", "application/xml", "application/pdf",
         "image/jpeg", "image/png", "image/gif", "image/webp",
-        "image/svg+xml"
+        "image/svg+xml", "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ]
 
     model_config = SettingsConfigDict(
