@@ -19,14 +19,7 @@ class Settings(BaseSettings):
     # TTL presets
     TTL_PRESETS_SECONDS: dict = {5: 300, 20: 1200, 60: 3600}
     
-    # Supported content types
-    SUPPORTED_CONTENT_TYPES: list = [
-        "text/plain", "text/html", "text/css", "text/javascript",
-        "application/json", "application/xml", "application/pdf",
-        "image/jpeg", "image/png", "image/gif", "image/webp",
-        "image/svg+xml", "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ]
+
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"),

@@ -37,10 +37,6 @@ async def create_paste(request: PasteRequest, req: Request):
     if len(request.content) > settings.MAX_PASTE_SIZE_BYTES:
         raise HTTPException(status_code=413, detail="Payload too large. Max 10MB allowed.")
     
-    # Validate content type
-    if request.content_type not in settings.SUPPORTED_CONTENT_TYPES:
-        raise HTTPException(status_code=400, detail=f"Unsupported content type: {request.content_type}")
-    
     # Validate TTL
     if request.ttl_minutes not in settings.TTL_PRESETS_SECONDS:
         raise HTTPException(status_code=400, detail="Invalid TTL. Must be 5, 20, or 60 minutes")
@@ -55,8 +51,8 @@ async def create_paste(request: PasteRequest, req: Request):
         ttl_seconds = settings.TTL_PRESETS_SECONDS[request.ttl_minutes]
         expires_at = datetime.now(timezone.utc) + timedelta(seconds=ttl_seconds)
         
-        # Determine encoding based on content type
-        encoding = "base64" if request.content_type.startswith("image/") or request.content_type == "application/pdf" else "utf-8"
+        # Determine encoding based on presence of filename (files are base64 encoded by frontend)
+        encoding = "base64" if request.filename else "utf-8"
         
         max_retries = 10
         for _ in range(max_retries):

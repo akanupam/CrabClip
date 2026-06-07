@@ -19,8 +19,26 @@ export default function ContentDisplay({
 }: ContentDisplayProps) {
   const [copied, setCopied] = useState(false)
 
+  const getDecodedText = () => {
+    if (encoding === 'base64') {
+      try {
+        const binaryString = atob(content)
+        const bytes = new Uint8Array(binaryString.length)
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i)
+        }
+        return new TextDecoder('utf-8').decode(bytes)
+      } catch (e) {
+        return 'Error decoding text content.'
+      }
+    }
+    return content
+  }
+
+  const displayText = (content_type?.startsWith('text/') || content_type === 'application/json') ? getDecodedText() : ''
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(content)
+    navigator.clipboard.writeText(displayText)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -107,7 +125,7 @@ export default function ContentDisplay({
           <div className="glass-input flex-1 overflow-hidden flex flex-col relative group bg-zinc-950 border-zinc-800 shadow-none min-h-0">
             <div className="p-4 overflow-y-auto custom-scrollbar relative z-0 flex-1 min-h-0">
               <pre className="text-sm font-mono whitespace-pre-wrap break-words leading-relaxed text-zinc-100">
-                {content}
+                {displayText}
               </pre>
             </div>
           </div>
