@@ -183,11 +183,11 @@ export default function Home() {
       </div>
 
       {/* Main Content Container */}
-      <div className="flex-1 overflow-hidden px-4 lg:px-12 pb-4 lg:pb-8 z-10 pt-8 lg:pt-0">
-        <div className="max-w-[1400px] mx-auto h-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
+      <div className="flex-1 overflow-y-auto lg:overflow-hidden px-4 lg:px-12 pb-4 lg:pb-8 z-10 pt-8 lg:pt-0">
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20 min-h-full">
 
           {/* Hero Section (Left) */}
-          <div className="w-full lg:flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left animate-fade-in max-w-2xl xl:max-w-3xl relative h-[600px] lg:h-[620px] py-4 lg:py-6 space-y-10 lg:space-y-12">
+          <div className="w-full lg:flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left animate-fade-in max-w-2xl xl:max-w-3xl relative lg:h-[620px] py-4 lg:py-6 space-y-10 lg:space-y-12">
 
             <div className="space-y-6 lg:space-y-8 w-full">
               <div className="flex flex-row items-center justify-center lg:justify-start gap-4 lg:gap-8 w-full">
@@ -211,7 +211,7 @@ export default function Home() {
                   Your go-to online clipboard.
                 </p>
                 
-                <ul className="text-base lg:text-lg text-zinc-400 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0 space-y-2 lg:space-y-3 text-left w-fit lg:w-auto">
+                <ul className="text-base lg:text-lg text-zinc-400 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0 space-y-2 lg:space-y-3 text-left w-fit lg:w-auto hidden lg:block">
                   <li className="flex items-center gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-crab-coral flex-shrink-0"></span>
                     Drop text or files to generate a secure code.
@@ -228,7 +228,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-4 lg:gap-6 justify-center lg:justify-start relative z-10 w-full pl-0 lg:pl-2">
+            <div className="hidden lg:flex flex-wrap gap-4 lg:gap-6 justify-center lg:justify-start relative z-10 w-full pl-0 lg:pl-2">
               <div className="flex items-center gap-3 px-5 py-3 lg:px-6 lg:py-4 bg-zinc-900/40 border border-zinc-800/80 rounded-xl text-base font-medium text-zinc-300 shadow-sm backdrop-blur-sm">
                 <ShieldCheck size={22} className="text-emerald-500" />
                 End-to-End Secure
@@ -345,7 +345,37 @@ export default function Home() {
               )}
             </div>
           </div>
-      </div>
+
+          {/* Mobile Info Section (Below box on mobile) */}
+          <div className="w-full lg:hidden flex flex-col items-center justify-center space-y-8 pb-12">
+            <ul className="text-base text-zinc-400 font-medium leading-relaxed max-w-lg mx-auto space-y-3 text-left w-fit">
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 mt-2 rounded-full bg-crab-coral flex-shrink-0"></span>
+                <span>Drop text or files to generate a secure code.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 mt-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                <span>Clips self-destruct instantly after retrieval.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 mt-2 rounded-full bg-zinc-500 flex-shrink-0"></span>
+                <span>No tracking, no logs, and no accounts required.</span>
+              </li>
+            </ul>
+
+            <div className="flex flex-col gap-4 justify-center relative z-10 w-full max-w-xs mx-auto">
+              <div className="flex items-center justify-center gap-3 px-5 py-3.5 bg-zinc-900/40 border border-zinc-800/80 rounded-xl text-base font-medium text-zinc-300 shadow-sm backdrop-blur-sm">
+                <ShieldCheck size={22} className="text-emerald-500" />
+                End-to-End Secure
+              </div>
+              <div className="flex items-center justify-center gap-3 px-5 py-3.5 bg-zinc-900/40 border border-zinc-800/80 rounded-xl text-base font-medium text-zinc-300 shadow-sm backdrop-blur-sm">
+                <Ghost size={22} className="text-crab-coral" />
+                No Traces Left
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       {/* History Modal */}
